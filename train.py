@@ -44,7 +44,7 @@ class Survial_Model(object):
         for i  in al:
             for l in l1:
                 cph =  CoxPHFitter(alpha = i, l1_ratio = l)
-                cph.fit(df_stage_train, 'Time to event', event_col='Event', step_size=1) 
+                cph.fit(df_stage_train, 'Time to event', event_col='Event',fit_options={'step_size':1}) 
                 Cindex_internal = concordance_index(df_stage_test_1['Time to event'], -cph.predict_partial_hazard(df_stage_test_1), df_stage_test_1['Event'])
                 results[str(i)+'_'+str(l)] = Cindex_internal
         return results
@@ -67,7 +67,7 @@ class Survial_Model(object):
                                 'Time to event', 'Event']]
 
         self.cox_model =  CoxPHFitter(alpha = 0.1, l1_ratio = 0.5)
-        self.cox_model.fit(df_stage_train, 'Time to event', event_col='Event', step_size=1)
+        self.cox_model.fit(df_stage_train, 'Time to event', event_col='Event', fit_options={'step_size':1})
         self.cox_model.print_summary()
         
     def model_load(self, modelpath):
@@ -93,7 +93,7 @@ class Survial_Model(object):
                                 '%Mucin within tumor','%necrosis within tumor bed','%TB/PDC within tumor','Tumor:Stroma Ratio',
                                 'TILs per mm2 tumor','%High-grade','%SRCC','%Immature within tumor bed','%inflammatory within tumor bed',
                                 '%mature within tumor bed','%immature within stromal region','%inflammatory within stromal region','%mature within stromal region',
-                                'Time to event', 'Event']] ##full model
+                                'Time to event', 'Event']].copy() ##full model
             
             '''
             df_stage_test = self.test[['Stage','MMR status, 0=MMRP, 0=MMRD',
